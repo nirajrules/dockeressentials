@@ -4,7 +4,7 @@ variable:
     subdomain: niraj
     email: niraj.rules@gmail.com
     ucp_username: admin
-    ucp_password: Password123
+    ucp_password: xxxxxxxxx
 provider:
     # acme:
     #     email: niraj.rules@gmail.com
