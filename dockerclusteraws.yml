@@ -1,0 +1,77 @@
+variable:
+    region: ap-southeast-1
+    domain: dockerps.io
+    subdomain: niraj
+    email: niraj.rules@gmail.com
+    ucp_username: admin
+    ucp_password: Password123
+provider:
+    # acme:
+    #     email: niraj.rules@gmail.com
+    #     server_url: https://acme-staging-v02.api.letsencrypt.org/directory
+    aws:
+        region: ${region}
+        tags:
+          Owner: "Niraj"
+          Environment: "Test"
+cluster:
+    subscription:
+        id: sub-8f60cc34-54a2-4dd0-b2be-9f600a841939
+        license: /Users/nirajbhatt/Downloads/docker_subscription.lic
+    dtr:
+        version: docker/dtr:2.4.3
+    engine:
+        version: ee-stable-17.06.2
+    ucp:
+        username: ${ucp_username}
+        password: ${ucp_password}
+        version: docker/ucp:2.2.7
+        #set explicitly to false for EE versions < 17.06
+        cloud_provider: false
+    kubernetes:
+      #set explicitly to false for EE versions < 17.06
+      cloud_provider: false
+      efs_persistent_volumes: false
+      ebs_persistent_volumes: false
+resource:
+    aws_instance:
+        managers:
+            instance_type: t2.xlarge
+            os: RHEL 7.6
+            quantity: 3
+        registry:
+            instance_type: t2.xlarge
+            os: RHEL 7.6
+            quantity: 3
+        workers:
+            instance_type: t2.xlarge
+            os: RHEL 7.6
+            quantity: 3
+            swarm_labels:
+                com.docker.ucp.orchestrator.kubernetes: "true"
+                com.docker.ucp.orchestrator.swarm: "true"
+    aws_lb:
+        apps:
+            domain: ${subdomain}.${domain}
+            instances:
+            - workers
+            ports:
+            - 80:8080
+            - 443:8443
+        dtr:
+            domain: ${subdomain}.${domain}
+            instances:
+            - registry
+            ports:
+            - 443:443
+        ucp:
+            domain: ${subdomain}.${domain}
+            instances:
+            - managers
+            ports:
+            - 443:443
+            - 6443:6443
+    aws_route53_zone:
+        dns:
+            domain: ${domain} #make sure public zone for domain is already existing
+            subdomain: ${subdomain}
