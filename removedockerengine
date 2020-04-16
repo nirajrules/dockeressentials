@@ -1,4 +1,9 @@
-docker swarm leave
-docker node rm
-yum remove docker-ee docker-ee-cli containerd
-rm /etc/yum.repos.d/docker*.repo
+#STEPS TO REMOVE EXISTING DOCKER COMPONENTS FROM A NODE
+
+docker node demote <node-name> #only required for manager to demote it to worker 
+docker swarm leave #run directly on node to bring it DOWN state
+docker node rm <node-name> #run this from manager; node left swarm but we need to remove the metadata too
+docker container rm -f $(docker container ls -q) #remove any running containers before reinstall UCP/DTR
+docker volume rm $(docker volume ls -q) #remove any volumes that might conflict with reinstall 
+yum remove docker-ee docker-ee-cli containerd #in case you want to remove docker from node
+rm /etc/yum.repos.d/docker*.repo #remove the docker repo
