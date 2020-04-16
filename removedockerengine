@@ -1,0 +1,4 @@
+docker swarm leave
+docker node rm
+yum remove docker-ee docker-ee-cli containerd
+rm /etc/yum.repos.d/docker*.repo

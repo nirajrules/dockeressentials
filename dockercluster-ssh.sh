@@ -29,8 +29,8 @@ if [ "${HOST_IP}" == "" ]; then
 fi
 echo "Attempting to connect to ${HOST_NAME}($HOST_IP) in cluster ${CLUSTER_NAME}(${CLUSTER_UUID})"
 
-#SSH into specificed host with cluster cert 
-ssh -o "StrictHostKeyChecking no" -i ${DOCKER_CLUSTER_FILES_ROOT}/clusters/${CLUSTER_UUID}/ssh/id_rsa ${HOST_IP}
+#SSH into specificed host with cluster cert with ec2-user (default for AWS)
+ssh -o "StrictHostKeyChecking no" -i ${DOCKER_CLUSTER_FILES_ROOT}/clusters/${CLUSTER_UUID}/ssh/id_rsa ec2-user@${HOST_IP}
 
 #samples: 
 #cluster-ssh <cluster name> <host tag>

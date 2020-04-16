@@ -1,10 +1,10 @@
 variable:
-    region: ap-southeast-1
+    region: us-east-1
     domain: dockerps.io
     subdomain: niraj
     email: niraj.rules@gmail.com
     ucp_username: admin
-    ucp_password: xxxxxxxxx
+    ucp_password: Password123
 provider:
     # acme:
     #     email: niraj.rules@gmail.com
